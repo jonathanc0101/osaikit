@@ -14,10 +14,10 @@ Interactive CLI that recommends the best open-source LLM for your stack, hardwar
 
 ```bash
 # Analyze a repo and get instant recommendations
-npx osai --repo .
+npx osaikit --repo .
 
 # Or run the interactive wizard
-npx osai
+npx osaikit
 ```
 
 ## What it does
@@ -29,8 +29,8 @@ Scores 32 open-source models across seven weighted dimensions to find the best f
 Point at any local repo. The analyzer scans your codebase and auto-detects languages, frameworks, runtime, platform, and project size — then skips straight to recommendations.
 
 ```bash
-osai --repo .
-osai --repo ~/projects/my-api
+osaikit --repo .
+osaikit --repo ~/projects/my-api
 ```
 
 ### Interactive wizard
@@ -62,21 +62,21 @@ Answer six quick questions about your development environment:
 ## Install
 
 ```bash
-npx osai
+npx osaikit
 ```
 
 Or install globally:
 
 ```bash
-npm install -g osai
-osai
+npm install -g osaikit
+osaikit
 ```
 
 ## Development
 
 ```bash
-git clone https://github.com/patio-coop/osai.git
-cd osai
+git clone https://github.com/patio-coop/osaikit.git
+cd osaikit
 npm install
 npm run dev    # build + run
 npm test       # run tests

@@ -18,8 +18,8 @@ function printHelp() {
   Find and deploy the right open LLM for your stack.
 
   Usage
-    $ osai
-    $ osai --repo <path>
+    $ osaikit
+    $ osaikit --repo <path>
 
   Options
     --help, -h       Show this help message
@@ -36,10 +36,10 @@ function printHelp() {
     based on auto-detected languages, frameworks, and project size.
 
   Examples
-    $ osai
-    $ osai --repo .
-    $ osai --repo ~/projects/my-app
-    $ npx osai --repo /path/to/repo
+    $ osaikit
+    $ osaikit --repo .
+    $ osaikit --repo ~/projects/my-app
+    $ npx osaikit --repo /path/to/repo
 `);
 }
 
