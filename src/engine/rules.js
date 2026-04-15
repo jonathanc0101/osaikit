@@ -2,6 +2,9 @@ import { MODELS, parseMemGB } from "./models.js";
 import { generateQuickStart } from "./quickstart.js";
 import { generateLicenseGuidance } from "./licensing.js";
 import { generateIntegrationSnippet } from "./integration.js";
+import { generateComplianceReport } from "./compliance.js";
+import { getModelCard } from "./modelcards.js";
+import { generateSafetyRecommendation } from "./safety.js";
 
 // ── Prompt Templates ─────────────────────────────────────────────────
 
@@ -675,6 +678,9 @@ export function recommend(inputs) {
     quickStart: generateQuickStart(primaryScored.model, primaryDeployment),
     licenseGuidance: generateLicenseGuidance(primaryScored.model),
     integrationSnippet: (inputs.frameworks && inputs.frameworks.length > 0) ? generateIntegrationSnippet(primaryScored.model, inputs) : null,
+    complianceReport: generateComplianceReport(primaryScored.model, inputs),
+    modelCard: getModelCard(primaryScored.model),
+    safetyRecommendation: generateSafetyRecommendation(primaryScored.model, inputs),
   };
 
   const fallback = fallbackScored

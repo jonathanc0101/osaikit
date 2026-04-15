@@ -243,10 +243,180 @@ function LicenseGuidance({ guidance }) {
   );
 }
 
+// ── Compliance Report ──────────────────────────────────────────────
+
+function ComplianceReport({ report }) {
+  if (!report) return null;
+  const lr = report.licenseReport;
+  const riskColor = lr.compatible ? C.accent : C.error;
+
+  return (
+    <Section title="COMPLIANCE REPORT" borderColor={riskColor}>
+      <Box marginBottom={1}>
+        <Text bold color={riskColor}>{lr.summary}</Text>
+      </Box>
+
+      {lr.risks.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>RISK ASSESSMENT</Text>
+          {lr.risks.map((risk, i) => {
+            const rc = risk.level === 'critical' || risk.level === 'high' ? C.error : risk.level === 'medium' ? C.warning : C.accent;
+            return (
+              <Box key={i} gap={1}>
+                <Text color={rc}>[{risk.level.toUpperCase()}]</Text>
+                <Text bold>{risk.area}:</Text>
+                <Text wrap="wrap">{risk.detail}</Text>
+              </Box>
+            );
+          })}
+        </Box>
+      ) : null}
+
+      {report.regulatoryFlags.flags.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>REGULATORY FLAGS</Text>
+          {report.regulatoryFlags.flags.filter(f => f.applies).map((flag, i) => (
+            <Box key={i} flexDirection="column" marginBottom={1}>
+              <Box gap={1}>
+                <Text color={C.warning} bold>{flag.regulation}</Text>
+                <Text dimColor>— {flag.reason}</Text>
+              </Box>
+              <Box paddingLeft={2}>
+                <Text color={C.accent}>Action: {flag.action}</Text>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      ) : null}
+
+      <Box marginTop={1}>
+        <Text dimColor italic>{report.disclaimer}</Text>
+      </Box>
+    </Section>
+  );
+}
+
+// ── Model Card ────────────────────────────────────────────────────
+
+function ModelCardSection({ modelCard }) {
+  if (!modelCard) return null;
+
+  return (
+    <Section title="MODEL CARD" borderColor="gray">
+      <Box flexDirection="column" marginBottom={1}>
+        <Text dimColor underline>INTENDED USE</Text>
+        <Text>{modelCard.intendedUse.primary}</Text>
+        <Box marginTop={1} gap={1}>
+          <Text dimColor>Best for:</Text>
+          <Text color={C.accent}>{modelCard.intendedUse.bestFor.join(', ')}</Text>
+        </Box>
+        <Box gap={1}>
+          <Text dimColor>Not for:</Text>
+          <Text color={C.warning}>{modelCard.intendedUse.notRecommendedFor.join(', ')}</Text>
+        </Box>
+      </Box>
+
+      {modelCard.limitations.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>KNOWN LIMITATIONS</Text>
+          {modelCard.limitations.map((lim, i) => {
+            const sc = lim.severity === 'high' ? C.error : lim.severity === 'medium' ? C.warning : C.accent;
+            return (
+              <Box key={i} gap={1}>
+                <Text color={sc}>[{lim.severity}]</Text>
+                <Text wrap="wrap">{lim.description}</Text>
+              </Box>
+            );
+          })}
+        </Box>
+      ) : null}
+
+      {modelCard.knownFailureModes.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>FAILURE MODES</Text>
+          {modelCard.knownFailureModes.map((mode, i) => (
+            <Box key={i} gap={1}>
+              <Text color={C.warning}>{'\u2022'}</Text>
+              <Text wrap="wrap">{mode}</Text>
+            </Box>
+          ))}
+        </Box>
+      ) : null}
+
+      <Text dimColor italic>{modelCard.trainingDataNotes}</Text>
+    </Section>
+  );
+}
+
+// ── Safety & Moderation ───────────────────────────────────────────
+
+function SafetySection({ safety }) {
+  if (!safety) return null;
+  const rc = safety.riskLevel === 'high' ? C.error : safety.riskLevel === 'medium' ? C.warning : C.accent;
+
+  return (
+    <Section title="SAFETY & MODERATION" borderColor={rc}>
+      <Box marginBottom={1} gap={1}>
+        <Text bold color={rc}>Risk: {safety.riskLevel.toUpperCase()}</Text>
+        <Text dimColor>— {safety.riskSummary}</Text>
+      </Box>
+
+      <Box flexDirection="column" marginBottom={1}>
+        <Row label="Built-in safety" value={safety.builtInSafety.hasSafetyTraining ? 'Yes' : 'No'} valueColor={safety.builtInSafety.hasSafetyTraining ? C.accent : C.error} />
+        <Text dimColor>{safety.builtInSafety.description}</Text>
+      </Box>
+
+      {safety.guardrails.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>RECOMMENDED GUARDRAILS</Text>
+          {safety.guardrails.slice(0, 3).map((g, i) => (
+            <Box key={i} flexDirection="column" marginBottom={1}>
+              <Box gap={1}>
+                <Text bold color={C.accent}>{g.name}</Text>
+                <Text dimColor>({g.type})</Text>
+              </Box>
+              <Box paddingLeft={2} flexDirection="column">
+                <Text dimColor>{g.description}</Text>
+                <Text color={C.accent}>{g.setup}</Text>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      ) : null}
+
+      {safety.codeSpecificRisks.length > 0 ? (
+        <Box flexDirection="column" marginBottom={1}>
+          <Text dimColor underline>CODE-SPECIFIC RISKS</Text>
+          {safety.codeSpecificRisks.map((risk, i) => {
+            const sc2 = risk.severity === 'high' ? C.error : risk.severity === 'medium' ? C.warning : C.accent;
+            return (
+              <Box key={i} gap={1}>
+                <Text color={sc2}>[{risk.severity}]</Text>
+                <Text bold>{risk.risk}:</Text>
+                <Text wrap="wrap">{risk.mitigation}</Text>
+              </Box>
+            );
+          })}
+        </Box>
+      ) : null}
+
+      <Box flexDirection="column">
+        <Text dimColor underline>PRODUCTION CHECKLIST</Text>
+        {safety.productionChecklist.map((item, i) => (
+          <Box key={i} gap={1}>
+            <Text color={C.accent}>{'\u2610'}</Text>
+            <Text>{item}</Text>
+          </Box>
+        ))}
+      </Box>
+    </Section>
+  );
+}
+
 // ── Integration Snippet ─────────────────────────────────────────────
 
 function IntegrationSnippet({ snippet }) {
-  if (!snippet) return null;
+  if (!snippet || !snippet.framework) return null;
 
   return (
     <Section title={`INTEGRATION — ${snippet.framework.toUpperCase()} (${snippet.runtime})`} borderColor={C.blue || C.teal}>
@@ -462,6 +632,9 @@ export default function Results({ recommendation, leaderboards }) {
       {/* 2. Primary Model */}
       <PrimaryModel primary={primary} />
 
+      {/* Model Card */}
+      <ModelCardSection modelCard={primary?.modelCard} />
+
       {/* 3. Model Config */}
       <ModelConfig config={primary?.config} />
 
@@ -473,6 +646,12 @@ export default function Results({ recommendation, leaderboards }) {
 
       {/* 6. License Guidance */}
       <LicenseGuidance guidance={primary?.licenseGuidance} />
+
+      {/* Compliance Report */}
+      <ComplianceReport report={primary?.complianceReport} />
+
+      {/* Safety & Moderation */}
+      <SafetySection safety={primary?.safetyRecommendation} />
 
       {/* Integration Snippet */}
       <IntegrationSnippet snippet={primary?.integrationSnippet} />
