@@ -62,10 +62,13 @@ function printVersion() {
   }
 }
 
-function parseFlag(args, flag) {
+function parseFlag(args, flag, defaultValue = null) {
   const idx = args.indexOf(flag);
   if (idx === -1) return null;
-  return args[idx + 1] || null;
+  const next = args[idx + 1];
+  // If next arg is missing or is another flag, use the default
+  if (!next || next.startsWith('-')) return defaultValue;
+  return next;
 }
 
 // Parse flags
@@ -125,7 +128,7 @@ if (cmd) {
 // ── Default: launch TUI wizard ──────────────────────────────────────────
 
 // Check for --repo flag
-const repoPath = parseFlag(args, '--repo');
+const repoPath = parseFlag(args, '--repo', '.');
 let repoData = null;
 
 if (repoPath) {
