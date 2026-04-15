@@ -712,6 +712,289 @@ const FAMILY_CARDS = {
       "Trained on curated, IBM-vetted code corpus. Transparent data governance. IP indemnification available via IBM watsonx.",
     modelCardExists: true,
   },
+
+  "DeepSeek R1": {
+    intendedUse: {
+      primary: "Advanced reasoning, code generation, and mathematical problem solving with chain-of-thought",
+      bestFor: [
+        "Complex code generation requiring multi-step reasoning",
+        "Mathematical and algorithmic problem solving",
+        "Debugging and code analysis",
+        "Architecture design and system reasoning",
+      ],
+      notRecommendedFor: [
+        "On-device deployment (full model)",
+        "Latency-sensitive applications (reasoning overhead)",
+        "Safety-critical systems without human oversight",
+      ],
+    },
+    limitations: [
+      { category: "latency", severity: "high", description: "Chain-of-thought reasoning adds significant latency to responses" },
+      { category: "compute", severity: "high", description: "Full 671B MoE model requires cloud-scale infrastructure" },
+      { category: "knowledge-cutoff", severity: "medium", description: "Training data cutoff limits knowledge of very recent frameworks" },
+    ],
+    knownFailureModes: [
+      "Reasoning chains can be verbose and occasionally circular",
+      "May over-reason on simple tasks where direct answers suffice",
+      "Distilled variants lose significant reasoning capability",
+    ],
+    evaluationGaps: [
+      "Long-context reasoning reliability not extensively tested",
+      "Safety evaluations of reasoning chains not fully published",
+      "Distill variant quality vs full model not independently benchmarked",
+    ],
+    trainingDataNotes: "Trained with reinforcement learning on reasoning traces. MIT license. From DeepSeek.",
+    modelCardExists: true,
+  },
+
+  "Phi-4": {
+    intendedUse: {
+      primary: "Compact reasoning and code generation with strong mathematical capabilities",
+      bestFor: [
+        "Reasoning and logical tasks",
+        "Mathematical problem solving",
+        "Code generation in resource-constrained environments",
+        "On-device and edge deployment",
+      ],
+      notRecommendedFor: [
+        "Tasks requiring broad real-world knowledge",
+        "Multilingual tasks (smaller variants)",
+        "Creative and open-ended writing",
+      ],
+    },
+    limitations: [
+      { category: "training-data", severity: "medium", description: "Trained on synthetic data; may exhibit systematic biases" },
+      { category: "knowledge", severity: "medium", description: "Smaller knowledge base than larger models" },
+      { category: "context", severity: "medium", description: "Base Phi-4 has only 16K context window" },
+    ],
+    knownFailureModes: [
+      "May exhibit patterns from synthetic training data",
+      "Can struggle with niche topics outside the training distribution",
+      "Reasoning variant adds latency that may not suit interactive use",
+    ],
+    evaluationGaps: [
+      "Synthetic data influence on output patterns not fully characterized",
+      "Code security evaluation not publicly available",
+    ],
+    trainingDataNotes: "Trained on mix of web data and synthetic data. MIT license. From Microsoft Research.",
+    modelCardExists: true,
+  },
+
+  "Gemma 3": {
+    intendedUse: {
+      primary: "General-purpose instruction following with multimodal capabilities",
+      bestFor: [
+        "Instruction following",
+        "Code generation",
+        "Multilingual tasks",
+        "On-device deployment (smaller variants)",
+      ],
+      notRecommendedFor: [
+        "Tasks requiring distillation (license restriction)",
+        "Safety-critical systems without guardrails",
+      ],
+    },
+    limitations: [
+      { category: "licensing", severity: "medium", description: "Gemma license prohibits distillation and some deployment workflows" },
+      { category: "knowledge-cutoff", severity: "medium", description: "Training data cutoff limits knowledge of very recent events" },
+    ],
+    knownFailureModes: [
+      "Smaller variants struggle with complex multi-step reasoning",
+      "May produce inconsistent outputs across languages",
+    ],
+    evaluationGaps: [
+      "Limited evaluation beyond Google-published benchmarks",
+      "Code-specific evaluations less comprehensive than dedicated code models",
+    ],
+    trainingDataNotes: "Trained by Google on undisclosed corpus. Permissive Gemma license with distillation restrictions.",
+    modelCardExists: true,
+  },
+
+  "Mistral Small": {
+    intendedUse: {
+      primary: "Efficient general-purpose instruction following and coding",
+      bestFor: [
+        "Instruction following",
+        "Code generation",
+        "Reasoning tasks",
+        "Multilingual text processing",
+      ],
+      notRecommendedFor: [
+        "Tasks requiring the absolute latest knowledge",
+        "Safety-critical systems without guardrails",
+      ],
+    },
+    limitations: [
+      { category: "knowledge-cutoff", severity: "medium", description: "Training data cutoff limits knowledge of recent frameworks" },
+      { category: "transparency", severity: "medium", description: "Training data composition not publicly disclosed" },
+    ],
+    knownFailureModes: [
+      "May produce inconsistent outputs across languages",
+      "Quality can vary on highly domain-specific code tasks",
+    ],
+    evaluationGaps: [
+      "Training data composition unknown; bias assessment difficult",
+      "Limited independent safety evaluations published",
+    ],
+    trainingDataNotes: "Training data not disclosed. Apache 2.0 license. French company, EU-friendly.",
+    modelCardExists: true,
+  },
+
+  "Codestral": {
+    intendedUse: {
+      primary: "Code generation and fill-in-middle with large context window",
+      bestFor: [
+        "Code completion and generation",
+        "Fill-in-middle tasks",
+        "Multi-file code understanding",
+        "Multi-language code projects",
+      ],
+      notRecommendedFor: [
+        "Commercial products (non-production license)",
+        "Non-code tasks",
+      ],
+    },
+    limitations: [
+      { category: "licensing", severity: "critical", description: "MNPL license restricts commercial and production use" },
+      { category: "scope", severity: "medium", description: "Designed for code tasks; quality degrades outside that domain" },
+    ],
+    knownFailureModes: [
+      "May generate outputs that are tightly coupled to training data patterns",
+      "Quality drops for less common programming languages",
+    ],
+    evaluationGaps: [
+      "Limited independent evaluation outside Mistral-published benchmarks",
+      "License implications for generated code not fully assessed",
+    ],
+    trainingDataNotes: "Trained on code data by Mistral AI. MNPL (non-production) license.",
+    modelCardExists: true,
+  },
+
+  "Devstral": {
+    intendedUse: {
+      primary: "State-of-the-art agentic coding with strong SWE-bench performance",
+      bestFor: [
+        "Agentic coding workflows (SWE-bench style)",
+        "Code generation and debugging",
+        "Multi-file code understanding",
+        "Architecture and system design",
+      ],
+      notRecommendedFor: [
+        "Non-code tasks",
+        "Safety-critical systems without human review",
+      ],
+    },
+    limitations: [
+      { category: "scope", severity: "low", description: "Optimized for coding tasks; may underperform on general tasks" },
+      { category: "maturity", severity: "low", description: "Relatively new model; less battle-tested in production" },
+    ],
+    knownFailureModes: [
+      "May over-specialize on SWE-bench-style tasks vs real-world coding",
+      "Agentic performance depends heavily on scaffolding framework",
+    ],
+    evaluationGaps: [
+      "Real-world agentic performance vs benchmark performance not fully characterized",
+      "Security-focused code evaluation not publicly available",
+    ],
+    trainingDataNotes: "Trained on code data by Mistral AI. Apache 2.0 license (Small 2 variant).",
+    modelCardExists: true,
+  },
+
+  "Qwen3": {
+    intendedUse: {
+      primary: "General-purpose reasoning and code generation with thinking mode support",
+      bestFor: [
+        "Complex reasoning tasks",
+        "Code generation across many languages",
+        "Mathematical and scientific problem solving",
+        "Multi-step instruction following",
+      ],
+      notRecommendedFor: [
+        "Safety-critical systems without human review",
+        "Tasks requiring the latest knowledge beyond training cutoff",
+      ],
+    },
+    limitations: [
+      { category: "knowledge-cutoff", severity: "medium", description: "Training data cutoff limits knowledge of the newest frameworks" },
+      { category: "maturity", severity: "low", description: "New model family; less production track record than Llama or Mistral" },
+    ],
+    knownFailureModes: [
+      "Thinking mode can add significant latency for simple tasks",
+      "May generate overly verbose reasoning chains",
+      "MoE variants may have inconsistent quality across expert activations",
+    ],
+    evaluationGaps: [
+      "Limited independent evaluation outside of Alibaba-published benchmarks",
+      "Long-context code understanding not extensively tested",
+    ],
+    trainingDataNotes: "Trained on massive corpus. Apache 2.0 license. From Alibaba Cloud / Qwen team.",
+    modelCardExists: true,
+  },
+
+  "Qwen3-Coder": {
+    intendedUse: {
+      primary: "Specialized code generation with top-tier SWE-bench and coding benchmark performance",
+      bestFor: [
+        "Agentic coding workflows",
+        "Code generation across 100+ languages",
+        "Complex debugging and code review",
+        "Architecture design",
+      ],
+      notRecommendedFor: [
+        "On-device deployment (480B model)",
+        "Non-code tasks",
+        "Safety-critical systems without human oversight",
+      ],
+    },
+    limitations: [
+      { category: "compute", severity: "high", description: "480B MoE model requires cloud-scale infrastructure" },
+      { category: "scope", severity: "low", description: "Optimized for coding; may underperform on general tasks" },
+    ],
+    knownFailureModes: [
+      "Extremely resource-intensive; not practical for most self-hosted scenarios",
+      "May over-rely on training data patterns for less common frameworks",
+    ],
+    evaluationGaps: [
+      "Real-world agentic performance vs benchmark not fully characterized",
+      "Security-focused code generation not independently tested",
+    ],
+    trainingDataNotes: "Trained on massive code corpus. Apache 2.0 license. From Alibaba Cloud / Qwen team.",
+    modelCardExists: true,
+  },
+
+  "Llama 4": {
+    intendedUse: {
+      primary: "General-purpose instruction following with massive context and MoE efficiency",
+      bestFor: [
+        "Long-context document understanding",
+        "Instruction following",
+        "Multi-language tasks",
+        "Code generation and reasoning",
+      ],
+      notRecommendedFor: [
+        "On-device deployment",
+        "Safety-critical systems without guardrails",
+        "Tasks requiring knowledge after training cutoff",
+      ],
+    },
+    limitations: [
+      { category: "compute", severity: "high", description: "MoE architecture requires high memory for full model weights" },
+      { category: "maturity", severity: "medium", description: "Early reception noted some benchmark inconsistencies" },
+      { category: "safety", severity: "medium", description: "May generate harmful content without appropriate guardrails" },
+    ],
+    knownFailureModes: [
+      "Maverick variant extremely resource-intensive for self-hosting",
+      "MoE expert routing may not always activate optimal subset for code",
+      "Very long context performance may degrade toward end of window",
+    ],
+    evaluationGaps: [
+      "Independent benchmarking showed mixed results vs claimed performance",
+      "Long-context reliability for code tasks not extensively validated",
+      "Safety evaluations conducted primarily in English",
+    ],
+    trainingDataNotes: "Trained on massive dataset. Llama community license (permissive with restrictions above 700M MAU). From Meta.",
+    modelCardExists: true,
+  },
 };
 
 // ── Size-based limitation augmentations ─────────────────────────────────

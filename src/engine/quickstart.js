@@ -161,6 +161,110 @@ const ECOSYSTEM_IDS = {
     huggingface: "ibm-granite/granite-34b-code-instruct",
     gguf: "granite-34b-code-instruct",
   },
+
+  // ── DeepSeek R1 family ───────────────────────────────────────────────
+  "deepseek-r1": {
+    huggingface: "deepseek-ai/DeepSeek-R1",
+  },
+  "deepseek-r1-distill-qwen-32b": {
+    ollama: "deepseek-r1:32b",
+    huggingface: "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+    gguf: "deepseek-r1-distill-qwen-32b",
+  },
+  "deepseek-r1-distill-llama-8b": {
+    ollama: "deepseek-r1:8b",
+    huggingface: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    gguf: "deepseek-r1-distill-llama-8b",
+  },
+  "deepseek-v3-0324": {
+    huggingface: "deepseek-ai/DeepSeek-V3-0324",
+  },
+
+  // ── Phi-4 family ─────────────────────────────────────────────────────
+  "phi-4": {
+    ollama: "phi4:14b",
+    huggingface: "microsoft/phi-4",
+    gguf: "phi-4",
+  },
+  "phi-4-mini": {
+    ollama: "phi4-mini:3.8b",
+    huggingface: "microsoft/Phi-4-mini-instruct",
+    gguf: "phi-4-mini-instruct",
+  },
+  "phi-4-reasoning": {
+    ollama: "phi4-reasoning:14b",
+    huggingface: "microsoft/Phi-4-reasoning",
+    gguf: "phi-4-reasoning",
+  },
+
+  // ── Gemma 3 family ───────────────────────────────────────────────────
+  "gemma-3-4b": {
+    ollama: "gemma3:4b",
+    huggingface: "google/gemma-3-4b-it",
+    gguf: "gemma-3-4b-it",
+  },
+  "gemma-3-12b": {
+    ollama: "gemma3:12b",
+    huggingface: "google/gemma-3-12b-it",
+    gguf: "gemma-3-12b-it",
+  },
+  "gemma-3-27b": {
+    ollama: "gemma3:27b",
+    huggingface: "google/gemma-3-27b-it",
+    gguf: "gemma-3-27b-it",
+  },
+
+  // ── Mistral Small / Codestral / Devstral ─────────────────────────────
+  "mistral-small-3.1": {
+    ollama: "mistral-small:24b",
+    huggingface: "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+    gguf: "mistral-small-3.1-24b-instruct",
+  },
+  "codestral-2501": {
+    ollama: "codestral:22b",
+    huggingface: "mistralai/Codestral-2501",
+    gguf: "codestral-2501",
+  },
+  "devstral-small-2": {
+    ollama: "devstral:24b",
+    huggingface: "mistralai/Devstral-Small-2-2512",
+    gguf: "devstral-small-2",
+  },
+
+  // ── Qwen3 family ─────────────────────────────────────────────────────
+  "qwen3-8b": {
+    ollama: "qwen3:8b",
+    huggingface: "Qwen/Qwen3-8B",
+    gguf: "qwen3-8b",
+  },
+  "qwen3-32b": {
+    ollama: "qwen3:32b",
+    huggingface: "Qwen/Qwen3-32B",
+    gguf: "qwen3-32b",
+  },
+  "qwen3-30b-a3b": {
+    ollama: "qwen3:30b-a3b",
+    huggingface: "Qwen/Qwen3-30B-A3B",
+    gguf: "qwen3-30b-a3b",
+  },
+  "qwen3-235b-a22b": {
+    huggingface: "Qwen/Qwen3-235B-A22B",
+  },
+
+  // ── Llama 4 family ───────────────────────────────────────────────────
+  "llama-4-scout": {
+    ollama: "llama4:scout",
+    huggingface: "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    gguf: "llama-4-scout",
+  },
+  "llama-4-maverick": {
+    huggingface: "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+  },
+
+  // ── Qwen3-Coder ─────────────────────────────────────────────────────
+  "qwen3-coder-480b": {
+    huggingface: "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+  },
 };
 
 // ── Command generators per ecosystem tool ───────────────────────────

@@ -145,9 +145,12 @@ describe('role-specific recommendations', () => {
       constraints: { maxMemory: '8GB', budget: 'free', deployment: 'local', privacy: 'strict' },
     }));
     if (result.primary) {
-      const params = result.primary.model.params;
-      const numParams = parseFloat(params);
-      assert.ok(numParams <= 14, `Mobile should prefer small models, got ${params}`);
+      const model = result.primary.model;
+      const minRAM = parseFloat(model.minRAM);
+      // MoE models can have large total params but small active params and RAM;
+      // check RAM requirement rather than raw param count for mobile suitability
+      assert.ok(minRAM <= 8, `Mobile should prefer low-RAM models, got ${model.minRAM} for ${model.name}`);
+      assert.ok(model.onDevice, `Mobile model should be on-device capable: ${model.name}`);
     }
   });
 

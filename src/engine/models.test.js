@@ -4,7 +4,7 @@ import { MODELS, parseMemGB, getModelFamilies, getModelById } from './models.js'
 
 describe('MODELS database', () => {
   it('contains at least 30 models', () => {
-    assert.ok(MODELS.length >= 30, `Expected 30+, got ${MODELS.length}`);
+    assert.ok(MODELS.length >= 45, `Expected 45+, got ${MODELS.length}`);
   });
 
   it('every model has all required fields', () => {
@@ -70,7 +70,7 @@ describe('MODELS database', () => {
 
   it('covers expected model families', () => {
     const families = getModelFamilies();
-    const expected = ['CodeLlama', 'StarCoder2', 'Llama 3.1', 'Mistral', 'Qwen2.5-Coder'];
+    const expected = ['CodeLlama', 'StarCoder2', 'Llama 3.1', 'Mistral', 'Qwen2.5-Coder', 'Qwen3', 'Llama 4', 'Gemma 3', 'Phi-4', 'DeepSeek R1'];
     for (const name of expected) {
       assert.ok(
         families.some(f => f.includes(name) || name.includes(f)),

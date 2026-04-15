@@ -61,6 +61,8 @@ describe('fetchAllLeaderboards()', () => {
     assert.ok('huggingface' in result);
     assert.ok('swebench' in result);
     assert.ok('aider' in result);
+    assert.ok('livecodebench' in result);
+    assert.ok('bigcodebench' in result);
     assert.ok('fetchedAt' in result);
     assert.ok('errors' in result);
     assert.ok(Array.isArray(result.errors));

@@ -22,6 +22,7 @@ function printHelp() {
     $ osaikit --repo <path>            Auto-detect and recommend
     $ osaikit run local                Deploy locally via ollama
     $ osaikit run local --repo <path>  Analyze repo + deploy locally
+    $ osaikit refresh                  Refetch all leaderboard data
 
   Options
     --help, -h       Show this help message
@@ -31,6 +32,7 @@ function printHelp() {
 
   Commands
     run local        Recommend + install + serve via ollama
+    refresh          Refetch all leaderboard data
 
   Examples
     $ osaikit
@@ -75,6 +77,49 @@ if (args[0] === 'run' && args[1] === 'local') {
     repo: parseFlag(args, '--repo'),
     model: parseFlag(args, '--model'),
   });
+  process.exit(0);
+}
+
+// Check for "refresh" subcommand
+if (args[0] === 'refresh') {
+  const { fetchAllLeaderboards } = await import('./api/index.js');
+  const { clearCache: clearHF } = await import('./api/huggingface.js');
+  const { clearCache: clearSWE } = await import('./api/swebench.js');
+  const { clearCache: clearAider } = await import('./api/aider.js');
+  const { clearCache: clearLCB } = await import('./api/livecodebench.js');
+  const { clearCache: clearBCB } = await import('./api/bigcodebench.js');
+
+  console.log('\n  Refreshing leaderboard data...\n');
+
+  clearHF();
+  clearSWE();
+  clearAider();
+  clearLCB();
+  clearBCB();
+
+  const results = await fetchAllLeaderboards();
+
+  const sources = [
+    ['HuggingFace', results.huggingface],
+    ['SWE-bench Verified', results.swebench],
+    ['Aider Polyglot', results.aider],
+    ['LiveCodeBench', results.livecodebench],
+    ['BigCodeBench', results.bigcodebench],
+  ];
+
+  for (const [name, data] of sources) {
+    if (data) {
+      console.log(`  \x1b[32m✓\x1b[0m ${name}: ${data.length} entries`);
+    } else {
+      console.log(`  \x1b[33m⚠\x1b[0m ${name}: live fetch failed (using fallback)`);
+    }
+  }
+
+  if (results.errors.length > 0) {
+    console.log(`\n  Errors: ${results.errors.join(', ')}`);
+  }
+
+  console.log(`\n  Fetched at: ${results.fetchedAt}\n`);
   process.exit(0);
 }
 

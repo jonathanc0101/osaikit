@@ -71,6 +71,9 @@ export async function fetchHuggingFaceLeaderboard(limit = 20) {
  * The public /api/models endpoint does not include benchmark scores directly,
  * so those fields are set to null. The primary value here is the model catalog
  * with popularity signals (likes, downloads).
+ *
+ * Benchmark fields reflect the Open LLM Leaderboard v2 suite
+ * (v1 benchmarks — ARC, HellaSwag, MMLU, TruthfulQA, Winogrande, GSM8K — were retired).
  */
 function normalizeModel(raw) {
   if (!raw || !raw.modelId && !raw.id) return null;
@@ -79,12 +82,12 @@ function normalizeModel(raw) {
     modelId: raw.modelId || raw.id,
     averageScore: null, // Not available from /api/models
     scores: {
-      arc: null,
-      hellaswag: null,
-      mmlu: null,
-      truthfulqa: null,
-      winogrande: null,
-      gsm8k: null,
+      ifeval: null,
+      bbh: null,
+      math: null,
+      gpqa: null,
+      musr: null,
+      mmluPro: null,
     },
     likes: raw.likes ?? 0,
     downloads: raw.downloads ?? 0,

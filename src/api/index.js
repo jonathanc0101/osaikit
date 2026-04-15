@@ -1,29 +1,35 @@
 /**
- * Leaderboard aggregator — fetches all three leaderboards in parallel
+ * Leaderboard aggregator — fetches all five leaderboards in parallel
  * and provides model enrichment via fuzzy name matching.
  */
 
 import { fetchHuggingFaceLeaderboard } from './huggingface.js';
 import { fetchSWEBenchLeaderboard } from './swebench.js';
 import { fetchAiderLeaderboard } from './aider.js';
+import { fetchLiveCodeBenchLeaderboard } from './livecodebench.js';
+import { fetchBigCodeBenchLeaderboard } from './bigcodebench.js';
 
 export { fetchHuggingFaceLeaderboard } from './huggingface.js';
 export { fetchSWEBenchLeaderboard } from './swebench.js';
 export { fetchAiderLeaderboard } from './aider.js';
+export { fetchLiveCodeBenchLeaderboard } from './livecodebench.js';
+export { fetchBigCodeBenchLeaderboard } from './bigcodebench.js';
 
 /**
- * Fetch all three leaderboards concurrently.
+ * Fetch all five leaderboards concurrently.
  * Uses Promise.allSettled so one failure does not block the others.
  *
- * @returns {Promise<{huggingface: Array|null, swebench: Array|null, aider: Array|null, fetchedAt: string, errors: string[]}>}
+ * @returns {Promise<{huggingface: Array|null, swebench: Array|null, aider: Array|null, livecodebench: Array|null, bigcodebench: Array|null, fetchedAt: string, errors: string[]}>}
  */
 export async function fetchAllLeaderboards() {
   const errors = [];
 
-  const [hfResult, sweResult, aiderResult] = await Promise.allSettled([
+  const [hfResult, sweResult, aiderResult, lcbResult, bcbResult] = await Promise.allSettled([
     fetchHuggingFaceLeaderboard(),
     fetchSWEBenchLeaderboard(),
     fetchAiderLeaderboard(),
+    fetchLiveCodeBenchLeaderboard(),
+    fetchBigCodeBenchLeaderboard(),
   ]);
 
   const extract = (result, label) => {
@@ -38,6 +44,8 @@ export async function fetchAllLeaderboards() {
     huggingface: extract(hfResult, 'HuggingFace'),
     swebench: extract(sweResult, 'SWE-bench'),
     aider: extract(aiderResult, 'Aider'),
+    livecodebench: extract(lcbResult, 'LiveCodeBench'),
+    bigcodebench: extract(bcbResult, 'BigCodeBench'),
     fetchedAt: new Date().toISOString(),
     errors,
   };
@@ -91,6 +99,30 @@ export function enrichModelWithLeaderboardData(model, leaderboards) {
         model: match.model,
         passRate: match.passRate,
         editFormat: match.editFormat,
+      };
+    }
+  }
+
+  // LiveCodeBench match
+  if (leaderboards.livecodebench) {
+    const match = findBestMatch(modelName, leaderboards.livecodebench, entry => entry.model);
+    if (match) {
+      enriched.leaderboard.livecodebench = {
+        model: match.model,
+        passRate: match.passRate,
+        category: match.category,
+      };
+    }
+  }
+
+  // BigCodeBench match
+  if (leaderboards.bigcodebench) {
+    const match = findBestMatch(modelName, leaderboards.bigcodebench, entry => entry.model);
+    if (match) {
+      enriched.leaderboard.bigcodebench = {
+        model: match.model,
+        passRate: match.passRate,
+        variant: match.variant,
       };
     }
   }

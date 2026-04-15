@@ -17,24 +17,27 @@ let cache = { data: null, fetchedAt: null };
 
 /**
  * Hardcoded fallback from publicly known Aider polyglot benchmark results.
- * These are approximate values from https://aider.chat/docs/leaderboards/
+ * Updated April 2026 from https://aider.chat/docs/leaderboards/
  */
 const FALLBACK_RESULTS = [
-  { model: 'claude-3.5-sonnet-20241022', passRate: 73.7, editFormat: 'diff', percentCorrect: 73.7 },
-  { model: 'claude-3.7-sonnet-20250219', passRate: 72.1, editFormat: 'diff', percentCorrect: 72.1 },
-  { model: 'o3-mini', passRate: 65.9, editFormat: 'diff', percentCorrect: 65.9 },
+  { model: 'gemini-2.5-pro-preview-06-05', passRate: 83.1, editFormat: 'diff-fenced', percentCorrect: 83.1 },
+  { model: 'o3', passRate: 76.9, editFormat: 'diff', percentCorrect: 76.9 },
+  { model: 'DeepSeek-V3.2-Exp', passRate: 74.2, editFormat: 'diff', percentCorrect: 74.2 },
   { model: 'gemini-2.5-pro-exp-03-25', passRate: 72.9, editFormat: 'diff-fenced', percentCorrect: 72.9 },
-  { model: 'gpt-4o-2024-08-06', passRate: 56.4, editFormat: 'diff', percentCorrect: 56.4 },
+  { model: 'claude-opus-4', passRate: 72.0, editFormat: 'diff', percentCorrect: 72.0 },
+  { model: 'o4-mini', passRate: 72.0, editFormat: 'diff', percentCorrect: 72.0 },
+  { model: 'deepseek-r1-0528', passRate: 71.4, editFormat: 'diff', percentCorrect: 71.4 },
+  { model: 'claude-3-7-sonnet', passRate: 64.9, editFormat: 'diff', percentCorrect: 64.9 },
+  { model: 'claude-sonnet-4', passRate: 61.3, editFormat: 'diff', percentCorrect: 61.3 },
+  { model: 'o3-mini', passRate: 60.4, editFormat: 'diff', percentCorrect: 60.4 },
   { model: 'deepseek-chat-v3-0324', passRate: 60.2, editFormat: 'diff', percentCorrect: 60.2 },
-  { model: 'claude-3-opus-20240229', passRate: 52.5, editFormat: 'diff', percentCorrect: 52.5 },
-  { model: 'gpt-4-turbo-2024-04-09', passRate: 50.0, editFormat: 'diff', percentCorrect: 50.0 },
-  { model: 'gemini-2.0-flash', passRate: 50.8, editFormat: 'diff-fenced', percentCorrect: 50.8 },
-  { model: 'llama-3.1-405b-instruct', passRate: 36.1, editFormat: 'diff', percentCorrect: 36.1 },
-  { model: 'mistral-large-2407', passRate: 34.4, editFormat: 'diff', percentCorrect: 34.4 },
-  { model: 'qwen2.5-72b-instruct', passRate: 34.1, editFormat: 'diff', percentCorrect: 34.1 },
+  { model: 'qwen3-235b-a22b', passRate: 59.6, editFormat: 'diff', percentCorrect: 59.6 },
   { model: 'deepseek-r1', passRate: 56.9, editFormat: 'diff', percentCorrect: 56.9 },
-  { model: 'o1-preview', passRate: 53.8, editFormat: 'whole', percentCorrect: 53.8 },
-  { model: 'gpt-4o-mini-2024-07-18', passRate: 38.2, editFormat: 'whole', percentCorrect: 38.2 },
+  { model: 'gpt-4o-2024-08-06', passRate: 56.4, editFormat: 'diff', percentCorrect: 56.4 },
+  { model: 'claude-3-5-sonnet-20241022', passRate: 53.8, editFormat: 'diff', percentCorrect: 53.8 },
+  { model: 'gemini-2.0-flash', passRate: 50.8, editFormat: 'diff-fenced', percentCorrect: 50.8 },
+  { model: 'gpt-4-turbo-2024-04-09', passRate: 50.0, editFormat: 'diff', percentCorrect: 50.0 },
+  { model: 'llama-3.1-405b-instruct', passRate: 36.1, editFormat: 'diff', percentCorrect: 36.1 },
 ];
 
 /**
