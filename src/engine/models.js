@@ -6,6 +6,7 @@ export const MODELS = [
   // ── DeepSeek Coder V2 ──────────────────────────────────────────────
   {
     id: "deepseek-coder-v2-16b",
+    legacy: true,
     name: "DeepSeek Coder V2 Lite",
     family: "DeepSeek Coder V2",
     params: "16B",
@@ -38,6 +39,7 @@ export const MODELS = [
   },
   {
     id: "deepseek-coder-v2-236b",
+    legacy: true,
     name: "DeepSeek Coder V2",
     family: "DeepSeek Coder V2",
     params: "236B",
@@ -72,6 +74,7 @@ export const MODELS = [
   // ── DeepSeek V3 ────────────────────────────────────────────────────
   {
     id: "deepseek-v3",
+    legacy: true,
     name: "DeepSeek V3",
     family: "DeepSeek V3",
     params: "671B",
@@ -341,6 +344,7 @@ export const MODELS = [
   // ── Llama 3.1 ──────────────────────────────────────────────────────
   {
     id: "llama-3.1-8b",
+    legacy: true,
     name: "Llama 3.1 8B Instruct",
     family: "Llama 3.1",
     params: "8B",
@@ -373,6 +377,7 @@ export const MODELS = [
   },
   {
     id: "llama-3.1-70b",
+    legacy: true,
     name: "Llama 3.1 70B Instruct",
     family: "Llama 3.1",
     params: "70B",
@@ -405,6 +410,7 @@ export const MODELS = [
   },
   {
     id: "llama-3.1-405b",
+    legacy: true,
     name: "Llama 3.1 405B Instruct",
     family: "Llama 3.1",
     params: "405B",
@@ -439,6 +445,7 @@ export const MODELS = [
   // ── Llama 3.2 (small/on-device) ───────────────────────────────────
   {
     id: "llama-3.2-1b",
+    legacy: true,
     name: "Llama 3.2 1B Instruct",
     family: "Llama 3.2",
     params: "1B",
@@ -471,6 +478,7 @@ export const MODELS = [
   },
   {
     id: "llama-3.2-3b",
+    legacy: true,
     name: "Llama 3.2 3B Instruct",
     family: "Llama 3.2",
     params: "3B",
@@ -674,6 +682,7 @@ export const MODELS = [
   // ── Qwen2.5-Coder ─────────────────────────────────────────────────
   {
     id: "qwen2.5-coder-1.5b",
+    legacy: true,
     name: "Qwen2.5-Coder 1.5B Instruct",
     family: "Qwen2.5-Coder",
     params: "1.5B",
@@ -706,6 +715,7 @@ export const MODELS = [
   },
   {
     id: "qwen2.5-coder-7b",
+    legacy: true,
     name: "Qwen2.5-Coder 7B Instruct",
     family: "Qwen2.5-Coder",
     params: "7B",
@@ -738,6 +748,7 @@ export const MODELS = [
   },
   {
     id: "qwen2.5-coder-14b",
+    legacy: true,
     name: "Qwen2.5-Coder 14B Instruct",
     family: "Qwen2.5-Coder",
     params: "14B",
@@ -770,6 +781,7 @@ export const MODELS = [
   },
   {
     id: "qwen2.5-coder-32b",
+    legacy: true,
     name: "Qwen2.5-Coder 32B Instruct",
     family: "Qwen2.5-Coder",
     params: "32B",
@@ -940,6 +952,7 @@ export const MODELS = [
   // ── Granite Code ───────────────────────────────────────────────────
   {
     id: "granite-code-3b",
+    legacy: true,
     name: "Granite Code 3B Instruct",
     family: "Granite Code",
     params: "3B",
@@ -972,6 +985,7 @@ export const MODELS = [
   },
   {
     id: "granite-code-8b",
+    legacy: true,
     name: "Granite Code 8B Instruct",
     family: "Granite Code",
     params: "8B",
@@ -1004,6 +1018,7 @@ export const MODELS = [
   },
   {
     id: "granite-code-20b",
+    legacy: true,
     name: "Granite Code 20B Instruct",
     family: "Granite Code",
     params: "20B",
@@ -1202,6 +1217,7 @@ export const MODELS = [
   // ── Phi-4 ─────────────────────────────────────────────────────────
   {
     id: "phi-4",
+    legacy: true,
     name: "Phi-4 (14B)",
     family: "Phi-4",
     params: "14B",

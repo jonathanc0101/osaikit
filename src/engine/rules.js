@@ -302,6 +302,20 @@ function scoreBenchmarks(model, inputs) {
     }
   }
 
+  // Boost from live leaderboard data if available
+  if (model._liveScores) {
+    if (model._liveScores.swebench != null) {
+      const normalized = model._liveScores.swebench / 70; // top SOTA ~70%
+      scores.push(normalized);
+      details.push(`SWE-bench live: ${model._liveScores.swebench}%`);
+    }
+    if (model._liveScores.aider != null) {
+      const normalized = model._liveScores.aider / 85; // top SOTA ~85%
+      scores.push(normalized);
+      details.push(`Aider live: ${model._liveScores.aider}%`);
+    }
+  }
+
   const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
   return { score: avgScore, details, weight: WEIGHTS.benchmarkScores };
 }
@@ -597,12 +611,17 @@ function generateWarnings(primary, _fallback, _onDevice, inputs) {
 
 // ── Main Recommendation Engine ───────────────────────────────────────
 
-export function recommend(inputs) {
+export function recommend(inputs, leaderboards = null) {
   // 1. Filter by hard constraints
   const candidates = [];
   const filtered = [];
 
   for (const model of MODELS) {
+    // Skip legacy models unless explicitly included
+    if (model.legacy && !inputs.includeLegacy) {
+      filtered.push({ model: model.name, reasons: ['Legacy model — superseded by newer generation'] });
+      continue;
+    }
     const check = passesHardConstraints(model, inputs);
     if (check.passes) {
       candidates.push(model);
@@ -627,16 +646,42 @@ export function recommend(inputs) {
     };
   }
 
-  // 2. Score all candidates
-  const scored = candidates.map((m) => scoreModel(m, inputs));
+  // 2. Optionally enrich with live leaderboard data
+  const enrichedCandidates = candidates.map(model => {
+    if (!leaderboards) return model;
+    const enriched = { ...model, _liveScores: {} };
+
+    // Try SWE-bench match
+    if (leaderboards.swebench) {
+      const match = leaderboards.swebench.find(e =>
+        model.name.toLowerCase().includes(e.model?.toLowerCase()?.split(' ')[0]) ||
+        e.model?.toLowerCase().includes(model.family?.toLowerCase())
+      );
+      if (match) enriched._liveScores.swebench = match.resolvedRate;
+    }
+
+    // Try Aider match
+    if (leaderboards.aider) {
+      const match = leaderboards.aider.find(e =>
+        model.name.toLowerCase().includes(e.model?.toLowerCase()?.split('-')[0]) ||
+        e.model?.toLowerCase().includes(model.id?.toLowerCase())
+      );
+      if (match) enriched._liveScores.aider = match.passRate;
+    }
+
+    return enriched;
+  });
+
+  // 3. Score all candidates
+  const scored = enrichedCandidates.map((m) => scoreModel(m, inputs));
   scored.sort((a, b) => b.finalScore - a.finalScore);
 
-  // 3. Pick primary (highest score)
+  // 4. Pick primary (highest score)
   const primaryScored = scored[0];
   const primaryDeployment = selectDeployment(primaryScored.model, inputs);
   const promptTemplate = selectPromptTemplate(inputs);
 
-  // 4. Pick fallback (second highest, different family preferred)
+  // 5. Pick fallback (second highest, different family preferred)
   let fallbackScored = scored.find(
     (s) => s.model.family !== primaryScored.model.family
   );
@@ -644,13 +689,13 @@ export function recommend(inputs) {
     fallbackScored = scored[1];
   }
 
-  // 5. Pick on-device option (highest-scoring on-device model)
+  // 6. Pick on-device option (highest-scoring on-device model)
   const onDeviceScored = scored.find((s) => s.model.onDevice);
 
-  // 6. RAG evaluation
+  // 7. RAG evaluation
   const { ragRecommended, ragReason } = evaluateRAG(primaryScored.model, inputs);
 
-  // 7. Build result
+  // 8. Build result
   const formatScored = (s, deployment) => ({
     model: s.model,
     reason: buildReason(s, inputs),

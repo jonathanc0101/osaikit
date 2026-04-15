@@ -13,6 +13,8 @@ const SOURCES = [
   { key: 'huggingface', label: 'HuggingFace Open LLM Leaderboard' },
   { key: 'swebench', label: 'SWE-bench Verified' },
   { key: 'aider', label: 'Aider Polyglot Benchmark' },
+  { key: 'livecodebench', label: 'LiveCodeBench' },
+  { key: 'bigcodebench', label: 'BigCodeBench' },
 ];
 
 /**

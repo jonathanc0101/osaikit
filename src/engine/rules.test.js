@@ -84,9 +84,11 @@ describe('recommend()', () => {
 
   it('handles no matching models gracefully', () => {
     // Impossible constraints: 1GB memory, local, permissive
+    // includeLegacy ensures all models are considered for hard constraint filtering
     const result = recommend(makeInputs({
       constraints: { maxMemory: '1GB', budget: 'free', deployment: 'local', privacy: 'strict' },
       license: 'copyleft',
+      includeLegacy: true,
     }));
     // Should either return null primary or have warnings
     assert.ok(

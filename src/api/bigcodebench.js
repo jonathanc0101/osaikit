@@ -2,8 +2,14 @@
  * BigCodeBench leaderboard integration.
  * Fetches coding benchmark results from BigCodeBench — a comprehensive
  * function-level coding benchmark covering diverse programming tasks.
- * Falls back to hardcoded recent results when live fetch fails.
+ * Falls back to cached JSON data, then to built-in hardcoded results.
  */
+
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const TIMEOUT_MS = 10_000;
 
@@ -15,9 +21,10 @@ const BIGCODEBENCH_URLS = [
 let cache = { data: null, fetchedAt: null };
 
 /**
- * Hardcoded fallback from publicly known BigCodeBench results.
+ * Built-in fallback from publicly known BigCodeBench results.
+ * Used when both live fetch and cache file fail.
  */
-const FALLBACK_RESULTS = [
+const BUILTIN_FALLBACK = [
   { model: 'claude-opus-4', passRate: 62.8, variant: 'complete', calibrated: true },
   { model: 'gemini-2.5-pro', passRate: 60.4, variant: 'complete', calibrated: true },
   { model: 'o3', passRate: 58.5, variant: 'complete', calibrated: true },
@@ -33,6 +40,16 @@ const FALLBACK_RESULTS = [
   { model: 'gemma-3-27b', passRate: 32.8, variant: 'complete', calibrated: true },
   { model: 'mistral-small-3.1', passRate: 30.4, variant: 'complete', calibrated: true },
 ];
+
+function loadFallback() {
+  try {
+    const raw = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'leaderboard-cache.json'), 'utf-8'));
+    if (raw.bigcodebench && Array.isArray(raw.bigcodebench) && raw.bigcodebench.length > 0) return raw.bigcodebench;
+    return BUILTIN_FALLBACK;
+  } catch {
+    return BUILTIN_FALLBACK;
+  }
+}
 
 /**
  * Fetches the BigCodeBench leaderboard.
@@ -52,7 +69,7 @@ export async function fetchBigCodeBenchLeaderboard(limit = 20) {
     return liveData.slice(0, limit);
   }
 
-  const sorted = [...FALLBACK_RESULTS].sort((a, b) => b.passRate - a.passRate);
+  const sorted = [...loadFallback()].sort((a, b) => b.passRate - a.passRate);
   cache.data = sorted;
   cache.fetchedAt = new Date().toISOString();
   return sorted.slice(0, limit);

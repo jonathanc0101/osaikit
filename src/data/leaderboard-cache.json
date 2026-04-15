@@ -1,0 +1,399 @@
+{
+  "swebench": [
+    {
+      "model": "Devstral Small 2",
+      "resolvedRate": 68,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2025-12-15"
+    },
+    {
+      "model": "Qwen3-Coder 480B-A35B",
+      "resolvedRate": 65.4,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-07-22"
+    },
+    {
+      "model": "Gemini 2.5 Pro",
+      "resolvedRate": 63.8,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-04-01"
+    },
+    {
+      "model": "DeepSeek R1-0528",
+      "resolvedRate": 57.6,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-06-01"
+    },
+    {
+      "model": "Claude 3.7 Sonnet",
+      "resolvedRate": 57,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-03-15"
+    },
+    {
+      "model": "GPT-4.1",
+      "resolvedRate": 54.6,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-04-15"
+    },
+    {
+      "model": "GPT-o3-mini",
+      "resolvedRate": 48.6,
+      "totalInstances": 500,
+      "agent": "OpenHands CodeAct v2.1",
+      "dateSubmitted": "2025-03-01"
+    },
+    {
+      "model": "DeepSeek R1",
+      "resolvedRate": 44.6,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2025-01-20"
+    },
+    {
+      "model": "DeepSeek-V3",
+      "resolvedRate": 42,
+      "totalInstances": 500,
+      "agent": "Agentless",
+      "dateSubmitted": "2025-01-10"
+    },
+    {
+      "model": "GPT-o1-preview",
+      "resolvedRate": 41.2,
+      "totalInstances": 500,
+      "agent": "Agentless",
+      "dateSubmitted": "2024-10-01"
+    },
+    {
+      "model": "Qwen3-235B-A22B",
+      "resolvedRate": 38.8,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2025-05-01"
+    },
+    {
+      "model": "GPT-4o (2024-08-06)",
+      "resolvedRate": 38.4,
+      "totalInstances": 500,
+      "agent": "Agentless",
+      "dateSubmitted": "2024-09-15"
+    },
+    {
+      "model": "Gemini 2.0 Flash",
+      "resolvedRate": 36.2,
+      "totalInstances": 500,
+      "agent": "Agentless",
+      "dateSubmitted": "2025-02-15"
+    },
+    {
+      "model": "Qwen2.5-72B-Instruct",
+      "resolvedRate": 27,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2024-12-01"
+    },
+    {
+      "model": "Llama 3.1 405B",
+      "resolvedRate": 23,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2024-08-01"
+    },
+    {
+      "model": "Mistral Large 2",
+      "resolvedRate": 22.4,
+      "totalInstances": 500,
+      "agent": "SWE-agent",
+      "dateSubmitted": "2024-09-20"
+    }
+  ],
+  "aider": [
+    {
+      "model": "gpt-5 (high)",
+      "passRate": 88,
+      "editFormat": "diff",
+      "percentCorrect": 88
+    },
+    {
+      "model": "gpt-5 (medium)",
+      "passRate": 86.7,
+      "editFormat": "diff",
+      "percentCorrect": 86.7
+    },
+    {
+      "model": "o3-pro (high)",
+      "passRate": 84.9,
+      "editFormat": "diff",
+      "percentCorrect": 84.9
+    },
+    {
+      "model": "gemini-2.5-pro-preview-06-05 (32k think)",
+      "passRate": 83.1,
+      "editFormat": "diff-fenced",
+      "percentCorrect": 83.1
+    },
+    {
+      "model": "o3 (high)",
+      "passRate": 81.3,
+      "editFormat": "diff",
+      "percentCorrect": 81.3
+    },
+    {
+      "model": "gpt-5 (low)",
+      "passRate": 81.3,
+      "editFormat": "diff",
+      "percentCorrect": 81.3
+    },
+    {
+      "model": "grok-4 (high)",
+      "passRate": 79.6,
+      "editFormat": "diff",
+      "percentCorrect": 79.6
+    },
+    {
+      "model": "gemini-2.5-pro-preview-06-05 (default think)",
+      "passRate": 79.1,
+      "editFormat": "diff-fenced",
+      "percentCorrect": 79.1
+    },
+    {
+      "model": "o3 (high) + gpt-4.1",
+      "passRate": 78.2,
+      "editFormat": "architect",
+      "percentCorrect": 78.2
+    },
+    {
+      "model": "Gemini 2.5 Pro Preview 05-06",
+      "passRate": 76.9,
+      "editFormat": "diff-fenced",
+      "percentCorrect": 76.9
+    },
+    {
+      "model": "o3",
+      "passRate": 76.9,
+      "editFormat": "diff",
+      "percentCorrect": 76.9
+    },
+    {
+      "model": "DeepSeek-V3.2-Exp (Reasoner)",
+      "passRate": 74.2,
+      "editFormat": "diff",
+      "percentCorrect": 74.2
+    },
+    {
+      "model": "Gemini 2.5 Pro Preview 03-25",
+      "passRate": 72.9,
+      "editFormat": "diff-fenced",
+      "percentCorrect": 72.9
+    },
+    {
+      "model": "o4-mini (high)",
+      "passRate": 72,
+      "editFormat": "diff",
+      "percentCorrect": 72
+    },
+    {
+      "model": "claude-opus-4-20250514 (32k thinking)",
+      "passRate": 72,
+      "editFormat": "diff",
+      "percentCorrect": 72
+    },
+    {
+      "model": "DeepSeek R1 (0528)",
+      "passRate": 71.4,
+      "editFormat": "diff",
+      "percentCorrect": 71.4
+    },
+    {
+      "model": "claude-opus-4-20250514 (no think)",
+      "passRate": 70.7,
+      "editFormat": "diff",
+      "percentCorrect": 70.7
+    },
+    {
+      "model": "DeepSeek-V3.2-Exp (Chat)",
+      "passRate": 70.2,
+      "editFormat": "diff",
+      "percentCorrect": 70.2
+    },
+    {
+      "model": "claude-3-7-sonnet-20250219 (32k thinking tokens)",
+      "passRate": 64.9,
+      "editFormat": "diff",
+      "percentCorrect": 64.9
+    },
+    {
+      "model": "DeepSeek R1 + claude-3-5-sonnet-20241022",
+      "passRate": 64,
+      "editFormat": "architect",
+      "percentCorrect": 64
+    }
+  ],
+  "livecodebench": [
+    {
+      "model": "claude-opus-4",
+      "passRate": 58.2,
+      "category": "code-generation",
+      "dateEvaluated": "2025-06"
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "passRate": 55.8,
+      "category": "code-generation",
+      "dateEvaluated": "2025-06"
+    },
+    {
+      "model": "o3",
+      "passRate": 54.6,
+      "category": "code-generation",
+      "dateEvaluated": "2025-06"
+    },
+    {
+      "model": "deepseek-v3-0324",
+      "passRate": 46.2,
+      "category": "code-generation",
+      "dateEvaluated": "2025-04"
+    },
+    {
+      "model": "claude-3-7-sonnet",
+      "passRate": 44.8,
+      "category": "code-generation",
+      "dateEvaluated": "2025-03"
+    },
+    {
+      "model": "deepseek-r1",
+      "passRate": 42.5,
+      "category": "code-generation",
+      "dateEvaluated": "2025-02"
+    },
+    {
+      "model": "qwen3-235b-a22b",
+      "passRate": 40.1,
+      "category": "code-generation",
+      "dateEvaluated": "2025-05"
+    },
+    {
+      "model": "gpt-4o-2024-08-06",
+      "passRate": 38.4,
+      "category": "code-generation",
+      "dateEvaluated": "2025-03"
+    },
+    {
+      "model": "qwen2.5-coder-32b",
+      "passRate": 32.8,
+      "category": "code-generation",
+      "dateEvaluated": "2025-01"
+    },
+    {
+      "model": "phi-4-reasoning",
+      "passRate": 30.2,
+      "category": "code-generation",
+      "dateEvaluated": "2025-05"
+    },
+    {
+      "model": "llama-3.1-405b",
+      "passRate": 28.6,
+      "category": "code-generation",
+      "dateEvaluated": "2025-01"
+    },
+    {
+      "model": "gemma-3-27b",
+      "passRate": 26.4,
+      "category": "code-generation",
+      "dateEvaluated": "2025-04"
+    }
+  ],
+  "bigcodebench": [
+    {
+      "model": "claude-opus-4",
+      "passRate": 62.8,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "passRate": 60.4,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "o3",
+      "passRate": 58.5,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "deepseek-v3-0324",
+      "passRate": 52.1,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "claude-3-7-sonnet",
+      "passRate": 50.2,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "deepseek-r1",
+      "passRate": 48.6,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "gpt-4o-2024-08-06",
+      "passRate": 45.8,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "qwen3-235b-a22b",
+      "passRate": 44.2,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "devstral-small-2",
+      "passRate": 42.2,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "qwen2.5-coder-32b",
+      "passRate": 40.5,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "llama-3.1-405b",
+      "passRate": 35.2,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "phi-4-reasoning",
+      "passRate": 34.6,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "gemma-3-27b",
+      "passRate": 32.8,
+      "variant": "complete",
+      "calibrated": true
+    },
+    {
+      "model": "mistral-small-3.1",
+      "passRate": 30.4,
+      "variant": "complete",
+      "calibrated": true
+    }
+  ],
+  "fetchedAt": "2026-04-15T16:49:41.671Z"
+}

@@ -109,6 +109,8 @@ export default function App({ repoData }) {
     huggingface: 'pending',
     swebench: 'pending',
     aider: 'pending',
+    livecodebench: 'pending',
+    bigcodebench: 'pending',
   });
 
   // Auto-advance from welcome after a brief pause
@@ -151,7 +153,7 @@ export default function App({ repoData }) {
       // Run the recommendation engine
       let result;
       try {
-        result = recommend(answers);
+        result = recommend(answers, leaderboardData);
 
         // Enrich with leaderboard data if available
         if (leaderboardData && result) {

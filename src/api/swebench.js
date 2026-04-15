@@ -1,8 +1,15 @@
 /**
  * SWE-bench Verified leaderboard API integration.
  * Attempts live fetch from the SWE-bench experiments repo, falls back to
- * hardcoded recent results. Uses only Node.js built-in fetch.
+ * cached JSON data, then to built-in hardcoded results.
+ * Uses only Node.js built-in fetch.
  */
+
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const TIMEOUT_MS = 10_000;
 
@@ -16,10 +23,10 @@ const RESULTS_URLS = [
 let cache = { data: null, fetchedAt: null };
 
 /**
- * Hardcoded fallback data from publicly known SWE-bench Verified results
- * as of April 2026. Used when the live fetch fails.
+ * Built-in fallback data from publicly known SWE-bench Verified results
+ * as of April 2026. Used when both live fetch and cache file fail.
  */
-const FALLBACK_RESULTS = [
+const BUILTIN_FALLBACK = [
   { model: 'Devstral Small 2', resolvedRate: 68.0, totalInstances: 500, agent: 'SWE-agent', dateSubmitted: '2025-12-15' },
   { model: 'Qwen3-Coder 480B-A35B', resolvedRate: 65.4, totalInstances: 500, agent: 'OpenHands CodeAct v2.1', dateSubmitted: '2025-07-22' },
   { model: 'Gemini 2.5 Pro', resolvedRate: 63.8, totalInstances: 500, agent: 'OpenHands CodeAct v2.1', dateSubmitted: '2025-04-01' },
@@ -37,6 +44,16 @@ const FALLBACK_RESULTS = [
   { model: 'Llama 3.1 405B', resolvedRate: 23.0, totalInstances: 500, agent: 'SWE-agent', dateSubmitted: '2024-08-01' },
   { model: 'Mistral Large 2', resolvedRate: 22.4, totalInstances: 500, agent: 'SWE-agent', dateSubmitted: '2024-09-20' },
 ];
+
+function loadFallback() {
+  try {
+    const raw = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'leaderboard-cache.json'), 'utf-8'));
+    if (raw.swebench && Array.isArray(raw.swebench) && raw.swebench.length > 0) return raw.swebench;
+    return BUILTIN_FALLBACK;
+  } catch {
+    return BUILTIN_FALLBACK;
+  }
+}
 
 /**
  * Fetches the SWE-bench Verified leaderboard.
@@ -56,8 +73,8 @@ export async function fetchSWEBenchLeaderboard(limit = 20) {
     return liveData.slice(0, limit);
   }
 
-  // Fallback to hardcoded data
-  const sorted = [...FALLBACK_RESULTS].sort((a, b) => b.resolvedRate - a.resolvedRate);
+  // Fallback to cached / built-in data
+  const sorted = [...loadFallback()].sort((a, b) => b.resolvedRate - a.resolvedRate);
   cache.data = sorted;
   cache.fetchedAt = new Date().toISOString();
   return sorted.slice(0, limit);
@@ -143,6 +160,6 @@ export function getCacheInfo() {
     cached: cache.data !== null,
     count: cache.data?.length ?? 0,
     fetchedAt: cache.fetchedAt,
-    isFallback: cache.data === FALLBACK_RESULTS,
+    isFallback: cache.data === BUILTIN_FALLBACK,
   };
 }

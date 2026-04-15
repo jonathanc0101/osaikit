@@ -2,8 +2,14 @@
  * LiveCodeBench leaderboard integration.
  * Fetches coding benchmark results from LiveCodeBench — a contamination-free
  * coding benchmark with regularly refreshed problems.
- * Falls back to hardcoded recent results when live fetch fails.
+ * Falls back to cached JSON data, then to built-in hardcoded results.
  */
+
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const TIMEOUT_MS = 10_000;
 
@@ -13,9 +19,10 @@ const LIVECODEBENCH_URL =
 let cache = { data: null, fetchedAt: null };
 
 /**
- * Hardcoded fallback from publicly known LiveCodeBench results.
+ * Built-in fallback from publicly known LiveCodeBench results.
+ * Used when both live fetch and cache file fail.
  */
-const FALLBACK_RESULTS = [
+const BUILTIN_FALLBACK = [
   { model: 'claude-opus-4', passRate: 58.2, category: 'code-generation', dateEvaluated: '2025-06' },
   { model: 'gemini-2.5-pro', passRate: 55.8, category: 'code-generation', dateEvaluated: '2025-06' },
   { model: 'o3', passRate: 54.6, category: 'code-generation', dateEvaluated: '2025-06' },
@@ -29,6 +36,16 @@ const FALLBACK_RESULTS = [
   { model: 'llama-3.1-405b', passRate: 28.6, category: 'code-generation', dateEvaluated: '2025-01' },
   { model: 'gemma-3-27b', passRate: 26.4, category: 'code-generation', dateEvaluated: '2025-04' },
 ];
+
+function loadFallback() {
+  try {
+    const raw = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'leaderboard-cache.json'), 'utf-8'));
+    if (raw.livecodebench && Array.isArray(raw.livecodebench) && raw.livecodebench.length > 0) return raw.livecodebench;
+    return BUILTIN_FALLBACK;
+  } catch {
+    return BUILTIN_FALLBACK;
+  }
+}
 
 /**
  * Fetches the LiveCodeBench leaderboard.
@@ -48,7 +65,7 @@ export async function fetchLiveCodeBenchLeaderboard(limit = 20) {
     return liveData.slice(0, limit);
   }
 
-  const sorted = [...FALLBACK_RESULTS].sort((a, b) => b.passRate - a.passRate);
+  const sorted = [...loadFallback()].sort((a, b) => b.passRate - a.passRate);
   cache.data = sorted;
   cache.fetchedAt = new Date().toISOString();
   return sorted.slice(0, limit);

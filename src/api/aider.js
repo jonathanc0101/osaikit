@@ -1,8 +1,15 @@
 /**
  * Aider polyglot coding leaderboard API integration.
  * Attempts to fetch live data from the Aider GitHub repo, falls back
- * to hardcoded recent results. Uses only Node.js built-in fetch.
+ * to cached JSON data, then to built-in hardcoded results.
+ * Uses only Node.js built-in fetch.
  */
+
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const TIMEOUT_MS = 10_000;
 
@@ -16,10 +23,11 @@ const AIDER_DATA_URLS = [
 let cache = { data: null, fetchedAt: null };
 
 /**
- * Hardcoded fallback from publicly known Aider polyglot benchmark results.
+ * Built-in fallback from publicly known Aider polyglot benchmark results.
  * Updated April 2026 from https://aider.chat/docs/leaderboards/
+ * Used when both live fetch and cache file fail.
  */
-const FALLBACK_RESULTS = [
+const BUILTIN_FALLBACK = [
   { model: 'gemini-2.5-pro-preview-06-05', passRate: 83.1, editFormat: 'diff-fenced', percentCorrect: 83.1 },
   { model: 'o3', passRate: 76.9, editFormat: 'diff', percentCorrect: 76.9 },
   { model: 'DeepSeek-V3.2-Exp', passRate: 74.2, editFormat: 'diff', percentCorrect: 74.2 },
@@ -40,6 +48,16 @@ const FALLBACK_RESULTS = [
   { model: 'llama-3.1-405b-instruct', passRate: 36.1, editFormat: 'diff', percentCorrect: 36.1 },
 ];
 
+function loadFallback() {
+  try {
+    const raw = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'leaderboard-cache.json'), 'utf-8'));
+    if (raw.aider && Array.isArray(raw.aider) && raw.aider.length > 0) return raw.aider;
+    return BUILTIN_FALLBACK;
+  } catch {
+    return BUILTIN_FALLBACK;
+  }
+}
+
 /**
  * Fetches the Aider polyglot coding leaderboard.
  * @param {number} limit
@@ -58,8 +76,8 @@ export async function fetchAiderLeaderboard(limit = 20) {
     return liveData.slice(0, limit);
   }
 
-  // Fallback
-  const sorted = [...FALLBACK_RESULTS].sort((a, b) => b.passRate - a.passRate);
+  // Fallback to cached / built-in data
+  const sorted = [...loadFallback()].sort((a, b) => b.passRate - a.passRate);
   cache.data = sorted;
   cache.fetchedAt = new Date().toISOString();
   return sorted.slice(0, limit);
