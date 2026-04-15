@@ -1,4 +1,4 @@
-# OSAI — Open-Source AI Compass
+# OSAI - Open Source AI Kit
 
 Interactive CLI that recommends the best open-source LLM for your stack, hardware, and use case. Point it at a repo and get model recommendations with copy-paste setup commands — no API keys required.
 

@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function printHelp() {
   console.log(`
-  OSAI — open-source AI compass
+  OSAI - open source AI kit
 
   Find and deploy the right open LLM for your stack.
 

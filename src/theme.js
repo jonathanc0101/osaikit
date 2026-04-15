@@ -4,7 +4,7 @@
 export const THEME = {
   brand: {
     name: 'OSAI',
-    tagline: 'OPEN-SOURCE AI COMPASS',
+    tagline: 'OPEN SOURCE AI KIT',
     subtitle: 'Find and deploy the right open LLM for your stack',
   },
   colors: {

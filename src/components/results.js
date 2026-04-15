@@ -682,7 +682,7 @@ export default function Results({ recommendation, leaderboards }) {
       <Box justifyContent="center" marginTop={1}>
         <Text dimColor>Powered by </Text>
         <Text bold color={C.accent}>OSAI</Text>
-        <Text dimColor> — open-source AI compass</Text>
+        <Text dimColor> — open source AI kit</Text>
       </Box>
     </Box>
   );
