@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Text, Newline, useInput, useStdout } from 'ink';
+import { Box, Text, useInput, useStdout } from 'ink';
 import { THEME } from '../theme.js';
 
 const C = THEME.colors;
@@ -33,6 +33,7 @@ function Section({ title, borderColor = 'gray', borderStyle = 'round', children,
   return (
     <Box
       flexDirection="column"
+      flexShrink={0}
       borderStyle={borderStyle}
       borderColor={borderColor}
       paddingX={2}
@@ -59,6 +60,13 @@ function Row({ label, value, valueColor = 'white' }) {
   );
 }
 
+function formatDimensionLabel(key) {
+  return String(key)
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[-_]+/g, ' ')
+    .toUpperCase();
+}
+
 function ScoreBar({ score }) {
   if (score == null) return null;
   const pct = Math.round(score * 100);
@@ -80,6 +88,7 @@ function Header({ width = 40 }) {
   return (
     <Box
       flexDirection="column"
+      flexShrink={0}
       alignItems="center"
       paddingX={4}
       paddingY={1}
@@ -103,20 +112,24 @@ function PrimaryModel({ primary }) {
   const dimensions = scoreBreakdown?.dimensions;
   return (
     <Section title="PRIMARY MODEL" borderColor={C.accent}>
-      <Text bold color={C.accent}>{modelName}</Text>
-      {model?.params ? <Text dimColor> ({model.params})</Text> : null}
-      <Newline />
-      <Text italic>{reason}</Text>
-      <Newline />
-      <ScoreBar score={finalScore} />
+      <Box gap={1}>
+        <Text bold color={C.accent}>{modelName}</Text>
+        {model?.params ? <Text dimColor>({model.params})</Text> : null}
+      </Box>
+      <Box marginTop={1}>
+        <Text italic wrap="wrap">{reason}</Text>
+      </Box>
+      <Box marginTop={1}>
+        <ScoreBar score={finalScore} />
+      </Box>
       {dimensions ? (
         <Box flexDirection="column" marginTop={1}>
           <Text dimColor underline>SCORE BREAKDOWN</Text>
           {Object.entries(dimensions).map(([key, dim]) => (
             <Row
               key={key}
-              label={key.toUpperCase()}
-              value={typeof dim === 'object' ? `${Math.round(dim.weighted * 100)}% (w:${dim.weight}x)` : `${Math.round(dim * 100)}%`}
+              label={formatDimensionLabel(key)}
+              value={typeof dim === 'object' ? `${Math.round(dim.score * 100)}% (w:${dim.weight}x)` : `${Math.round(dim * 100)}%`}
             />
           ))}
         </Box>
@@ -190,8 +203,9 @@ function QuickStart({ quickStart }) {
 
   return (
     <Section title="QUICK START" borderColor={C.accent}>
-      <Text dimColor>Get running in 60 seconds:</Text>
-      <Newline />
+      <Box marginBottom={1}>
+        <Text dimColor>Get running in 60 seconds:</Text>
+      </Box>
       {entries.map(([tool, cmd]) => {
         const isRec = tool === recommended;
         return (
@@ -437,8 +451,9 @@ function IntegrationSnippet({ snippet }) {
 
   return (
     <Section title={`INTEGRATION — ${snippet.framework.toUpperCase()} (${snippet.runtime})`} borderColor={C.blue || C.teal}>
-      <Text dimColor>{snippet.note}</Text>
-      <Newline />
+      <Box marginBottom={1}>
+        <Text dimColor>{snippet.note}</Text>
+      </Box>
       <Box borderStyle="round" borderColor="gray" paddingX={1} paddingY={0}>
         <Text color="white" wrap="wrap">{snippet.snippet}</Text>
       </Box>
@@ -476,10 +491,12 @@ function FallbackModel({ fallback }) {
   return (
     <Section title="FALLBACK MODEL" borderColor={C.teal}>
       <Text bold color={C.teal}>{typeof fallback.model === 'object' ? fallback.model.name : fallback.model}</Text>
-      <Newline />
-      <Text italic>{fallback.reason}</Text>
-      <Newline />
-      <ScoreBar score={fallback.scoreBreakdown?.finalScore} />
+      <Box marginTop={1}>
+        <Text italic wrap="wrap">{fallback.reason}</Text>
+      </Box>
+      <Box marginTop={1}>
+        <ScoreBar score={fallback.scoreBreakdown?.finalScore} />
+      </Box>
       {fallback.deploymentOption ? (
         <Row label="Deployment" value={fallback.deploymentOption} valueColor={C.teal} />
       ) : null}
@@ -494,10 +511,12 @@ function OnDevice({ onDevice }) {
   return (
     <Section title="ON-DEVICE OPTION" borderColor={C.accentDim}>
       <Text bold color={C.accentDim}>{typeof onDevice.model === 'object' ? onDevice.model.name : onDevice.model}</Text>
-      <Newline />
-      <Text italic>{onDevice.reason}</Text>
-      <Newline />
-      <ScoreBar score={onDevice.scoreBreakdown?.finalScore} />
+      <Box marginTop={1}>
+        <Text italic wrap="wrap">{onDevice.reason}</Text>
+      </Box>
+      <Box marginTop={1}>
+        <ScoreBar score={onDevice.scoreBreakdown?.finalScore} />
+      </Box>
       {onDevice.config ? (
         <Box flexDirection="column" marginTop={1}>
           {Object.entries(onDevice.config).map(([k, v]) => (
@@ -577,6 +596,7 @@ function RagAdvisory({ ragRecommended, ragReason }) {
   if (!ragRecommended) return null;
   return (
     <Box
+      flexShrink={0}
       borderStyle="round"
       borderColor={C.warning}
       paddingX={2}
@@ -585,10 +605,11 @@ function RagAdvisory({ ragRecommended, ragReason }) {
     >
       <Box flexDirection="column">
         <Text bold color={C.warning}>RAG RECOMMENDED</Text>
-        <Newline />
-        <Text color={C.warning} wrap="wrap">
-          {ragReason || 'Consider adding retrieval-augmented generation for better results with your data.'}
-        </Text>
+        <Box marginTop={1}>
+          <Text color={C.warning} wrap="wrap">
+            {ragReason || 'Consider adding retrieval-augmented generation for better results with your data.'}
+          </Text>
+        </Box>
       </Box>
     </Box>
   );
@@ -601,6 +622,7 @@ function Warnings({ warnings }) {
   return (
     <Box
       flexDirection="column"
+      flexShrink={0}
       borderStyle="round"
       borderColor={C.error}
       paddingX={2}
@@ -608,9 +630,8 @@ function Warnings({ warnings }) {
       marginBottom={1}
     >
       <Text bold color={C.error}>WARNINGS</Text>
-      <Newline />
       {warnings.map((w, i) => (
-        <Box key={i} gap={1}>
+        <Box key={i} gap={1} marginTop={i === 0 ? 1 : 0}>
           <Text color={C.error}>{'\u2022'}</Text>
           <Text color={C.error} wrap="wrap">{w}</Text>
         </Box>
@@ -627,12 +648,12 @@ function MainTabs({ activeTab, tabs, onChange }) {
     if (!isNaN(num) && num >= 1 && num <= tabs.length) {
       onChange(tabs[num - 1].key);
     }
-    if (key.left) {
+    if (key.leftArrow) {
       const idx = tabs.findIndex(t => t.key === activeTab);
       const newIdx = idx > 0 ? idx - 1 : tabs.length - 1;
       onChange(tabs[newIdx].key);
     }
-    if (key.right) {
+    if (key.rightArrow) {
       const idx = tabs.findIndex(t => t.key === activeTab);
       const newIdx = idx < tabs.length - 1 ? idx + 1 : 0;
       onChange(tabs[newIdx].key);
@@ -640,16 +661,19 @@ function MainTabs({ activeTab, tabs, onChange }) {
   });
 
   return (
-    <Box flexDirection="row" gap={2} marginBottom={1}>
-      {tabs.map((tab, idx) => (
-        <Box key={tab.key}>
-          {tab.key === activeTab ? (
-            <Text bold color={C.accent}>{idx + 1}. {tab.label}</Text>
-          ) : (
-            <Text dimColor>  {idx + 1}. {tab.label}</Text>
-          )}
-        </Box>
-      ))}
+    <Box flexDirection="column" flexShrink={0} marginBottom={1}>
+      <Box flexDirection="row" gap={2}>
+        {tabs.map((tab, idx) => (
+          <Box key={tab.key}>
+            {tab.key === activeTab ? (
+              <Text bold color={C.accent}>{idx + 1}. {tab.label}</Text>
+            ) : (
+              <Text dimColor>  {idx + 1}. {tab.label}</Text>
+            )}
+          </Box>
+        ))}
+      </Box>
+      <Text dimColor>Use number keys or left/right arrows to switch sections.</Text>
     </Box>
   );
 }
@@ -658,25 +682,21 @@ function MainTabs({ activeTab, tabs, onChange }) {
 
 function SubTabs({ activeSubTab, onChange }) {
   const subTabs = [
-    { key: 'model', label: 'Model', shortcut: 'm' },
-    { key: 'info', label: 'Info', shortcut: 'i' },
-    { key: 'use', label: 'Use', shortcut: 'u' },
+    { key: 'model', label: 'Score', shortcut: 's' },
+    { key: 'info', label: 'Config', shortcut: 'i' },
+    { key: 'use', label: 'Run', shortcut: 'r' },
     { key: 'prompt', label: 'Prompt', shortcut: 'p' },
-    { key: 'safety', label: 'Safety', shortcut: 's' },
+    { key: 'safety', label: 'Safety', shortcut: 'g' },
     { key: 'compliance', label: 'Compliance', shortcut: 'c' },
   ];
 
   useInput((input, key) => {
-    const num = parseInt(input, 10);
-    if (!isNaN(num) && num >= 1 && num <= subTabs.length) {
-      onChange(subTabs[num - 1].key);
-    }
-    if (key.left) {
+    if (key.shift && key.leftArrow) {
       const idx = subTabs.findIndex(t => t.key === activeSubTab);
       const newIdx = idx > 0 ? idx - 1 : subTabs.length - 1;
       onChange(subTabs[newIdx].key);
     }
-    if (key.right) {
+    if (key.shift && key.rightArrow) {
       const idx = subTabs.findIndex(t => t.key === activeSubTab);
       const newIdx = idx < subTabs.length - 1 ? idx + 1 : 0;
       onChange(subTabs[newIdx].key);
@@ -689,23 +709,25 @@ function SubTabs({ activeSubTab, onChange }) {
   });
 
   return (
-    <Box flexDirection="row" gap={2} marginBottom={1}>
-      {subTabs.map((tab, idx) => (
-        <Box key={tab.key}>
-          {idx > 0 && <Text dimColor>|</Text>}
-          {tab.key === activeSubTab ? (
-            <Text bold color={C.accent}>[{tab.shortcut}] {tab.label}</Text>
-          ) : (
-            <Text dimColor>  ({tab.shortcut}) {tab.label}</Text>
-          )}
-        </Box>
-      ))}
+    <Box flexDirection="column" flexShrink={0} marginBottom={1}>
+      <Box flexDirection="row" gap={1} flexWrap="wrap">
+        {subTabs.map((tab, idx) => (
+          <Box key={tab.key}>
+            {tab.key === activeSubTab ? (
+              <Text bold color={C.accent}>[{tab.shortcut}] {tab.label}</Text>
+            ) : (
+              <Text dimColor>  ({tab.shortcut}) {tab.label}</Text>
+            )}
+          </Box>
+        ))}
+      </Box>
+      <Text dimColor>Use shortcut letters for recommendation details.</Text>
     </Box>
   );
 }
 
 function SingleModelView({ recommendation, leaderboards, repoData, terminalSize, showRepoOnly }) {
-  const { width = 80, height = 24 } = terminalSize || {};
+  const { width = 80 } = terminalSize || {};
   const [activeSubTab, setActiveSubTab] = useState('model');
   const { primary, fallback, costEstimate, latencyEstimate, ragRecommended, ragReason, warnings } = recommendation;
 
@@ -716,7 +738,7 @@ function SingleModelView({ recommendation, leaderboards, repoData, terminalSize,
 
   if (showRepoOnly && hasRepo) {
     return (
-      <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth} height={height - 6} overflow="hidden">
+      <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth}>
         <Header width={maxWidth} />
         <Box marginBottom={1}>
           <Box flexDirection="column" borderStyle="round" borderColor={C.accent} paddingX={2} paddingY={1}>
@@ -744,7 +766,7 @@ function SingleModelView({ recommendation, leaderboards, repoData, terminalSize,
   }
 
   return (
-    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth} height={height - 6} overflow="hidden">
+    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth}>
       <Header width={maxWidth} />
       <SubTabs activeSubTab={activeSubTab} onChange={setActiveSubTab} />
       
@@ -801,12 +823,12 @@ function SingleModelView({ recommendation, leaderboards, repoData, terminalSize,
 }
 
 function FallbackOnlyView({ fallback, terminalSize }) {
-  const { width = 80, height = 24 } = terminalSize || {};
+  const { width = 80 } = terminalSize || {};
   const maxWidth = Math.min(width - 2, 120);
   const [activeSubTab, setActiveSubTab] = useState('model');
 
   return (
-    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth} height={height - 6} overflow="hidden">
+    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth}>
       <Header width={maxWidth} />
       
       <FallbackModel fallback={fallback} />
@@ -821,11 +843,11 @@ function FallbackOnlyView({ fallback, terminalSize }) {
 }
 
 function OnDeviceOnlyView({ onDevice, terminalSize }) {
-  const { width = 80, height = 24 } = terminalSize || {};
+  const { width = 80 } = terminalSize || {};
   const maxWidth = Math.min(width - 2, 120);
 
   return (
-    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth} height={height - 6} overflow="hidden">
+    <Box flexDirection="column" paddingX={1} paddingY={1} width={maxWidth}>
       <Header width={maxWidth} />
       
       <OnDevice onDevice={onDevice} />
@@ -860,7 +882,7 @@ export default function Results({ recommendation, leaderboards, repoData, termin
   if (hasRepo) {
     tabs = [
       { key: 'repo', label: 'Repo' },
-      { key: 'primary', label: 'Primary' },
+      { key: 'primary', label: 'Recommendation' },
       ...(hasFallback ? [{ key: 'fallback', label: 'Fallback' }] : []),
       ...(hasOnDevice ? [{ key: 'ondevice', label: 'On-Device' }] : []),
     ];
@@ -873,7 +895,7 @@ export default function Results({ recommendation, leaderboards, repoData, termin
   }
 
   return (
-    <Box flexDirection="column" width={width} height={height}>
+    <Box flexDirection="column" width={width}>
       <MainTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
       {hasRepo && activeTab === 'repo' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} repoData={repoData} showRepoOnly={true} terminalSize={{ width, height }} />}
       {activeTab === 'primary' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} terminalSize={{ width, height }} />}
