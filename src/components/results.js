@@ -7,6 +7,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Text, useInput, useStdout } from 'ink';
 import { THEME } from '../theme.js';
+import Scrollable from './scrollable.js';
 
 const C = THEME.colors;
 
@@ -895,12 +896,14 @@ export default function Results({ recommendation, leaderboards, repoData, termin
   }
 
   return (
-    <Box flexDirection="column" width={width}>
-      <MainTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
-      {hasRepo && activeTab === 'repo' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} repoData={repoData} showRepoOnly={true} terminalSize={{ width, height }} />}
-      {activeTab === 'primary' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} terminalSize={{ width, height }} />}
-      {activeTab === 'fallback' && hasFallback && <FallbackOnlyView fallback={fallback} terminalSize={{ width, height }} />}
-      {activeTab === 'ondevice' && hasOnDevice && <OnDeviceOnlyView onDevice={onDevice} terminalSize={{ width, height }} />}
-    </Box>
+    <Scrollable>
+      <Box flexDirection="column" width={width}>
+        <MainTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
+        {hasRepo && activeTab === 'repo' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} repoData={repoData} showRepoOnly={true} terminalSize={{ width, height }} />}
+        {activeTab === 'primary' && <SingleModelView recommendation={recommendation} leaderboards={leaderboards} terminalSize={{ width, height }} />}
+        {activeTab === 'fallback' && hasFallback && <FallbackOnlyView fallback={fallback} terminalSize={{ width, height }} />}
+        {activeTab === 'ondevice' && hasOnDevice && <OnDeviceOnlyView onDevice={onDevice} terminalSize={{ width, height }} />}
+      </Box>
+    </Scrollable>
   );
 }
